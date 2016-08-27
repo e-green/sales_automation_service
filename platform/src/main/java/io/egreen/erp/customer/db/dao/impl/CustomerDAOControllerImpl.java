@@ -1,8 +1,8 @@
-package io.egreen.erp.platform.db.dao.impl;
+package io.egreen.erp.customer.db.dao.impl;
 
 import io.egreen.apistudio.datalayer.mongodb.dao.impl.AbstractDAOController;
-import io.egreen.erp.platform.db.dao.CustomerDAOController;
-import io.egreen.erp.platform.db.entity.Customer;
+import io.egreen.erp.customer.db.dao.CustomerDAOController;
+import io.egreen.erp.customer.db.entity.Customer;
 
 import javax.ejb.Stateless;
 

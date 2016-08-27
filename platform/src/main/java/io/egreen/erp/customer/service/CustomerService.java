@@ -1,7 +1,7 @@
-package io.egreen.erp.platform.service;
+package io.egreen.erp.customer.service;
 
-import io.egreen.erp.platform.db.dao.CustomerDAOController;
-import io.egreen.erp.platform.db.entity.Customer;
+import io.egreen.erp.customer.db.dao.CustomerDAOController;
+import io.egreen.erp.customer.db.entity.Customer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

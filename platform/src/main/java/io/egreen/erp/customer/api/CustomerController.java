@@ -1,8 +1,7 @@
-package io.egreen.erp.platform.api;
+package io.egreen.erp.customer.api;
 
-import com.sun.org.apache.regexp.internal.RE;
-import io.egreen.erp.platform.db.entity.Customer;
-import io.egreen.erp.platform.service.CustomerService;
+import io.egreen.erp.customer.db.entity.Customer;
+import io.egreen.erp.customer.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;

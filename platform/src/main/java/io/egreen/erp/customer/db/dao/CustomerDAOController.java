@@ -1,7 +1,7 @@
-package io.egreen.erp.platform.db.dao;
+package io.egreen.erp.customer.db.dao;
 
 import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
-import io.egreen.erp.platform.db.entity.Customer;
+import io.egreen.erp.customer.db.entity.Customer;
 
 /**
  * Created by dewmal on 8/23/16.

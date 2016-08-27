@@ -3,7 +3,6 @@ package io.egreen.erp;
 import io.egreen.apistudio.bootstrap.ApiStudio;
 import io.egreen.apistudio.bootstrap.config.MSApp;
 import io.egreen.apistudio.datalayer.mongodb.MongoModuleInitializer;
-import org.glassfish.jersey.server.TracingConfig;
 
 import javax.ws.rs.ApplicationPath;
 

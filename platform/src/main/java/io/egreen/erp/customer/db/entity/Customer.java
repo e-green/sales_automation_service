@@ -1,4 +1,4 @@
-package io.egreen.erp.platform.db.entity;
+package io.egreen.erp.customer.db.entity;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;

@@ -1,13 +1,15 @@
-package io.egreen.erp.grn.api;
+package io.egreen.erp.gsn.api;
 
 import io.egreen.erp.grn.data.entity.BatchModel;
-import io.egreen.erp.grn.serivce.ItemBatchService;
+import io.egreen.erp.gsn.data.entity.OrderItem;
+import io.egreen.erp.gsn.service.OrderItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -26,44 +28,36 @@ import javax.ws.rs.core.MediaType;
  * specific language governing permissions and limitations
  * under the License.
  * <p>
- * Created by dewmal on 8/24/16.
+ * Created by dewmal on 8/27/16.
  */
 
-@Api("/batch")
-@Path("/batch")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public class ItemController {
-
-
+@Api("/orderItem")
+@Path("/orderItem")
+public class OrderItemContoller {
+    private static final Logger LOGGER = LogManager.getLogger(OrderItemContoller.class);
 
     @Inject
-    private ItemBatchService itemBatchService;
+    private OrderItemService orderItemService;
 
-    @ApiOperation("Get Product batch Details By Batch code ")
+    @ApiOperation("Get Product In Order  By Product code ")
     @GET
     @Path("/get/{code}")
-    public BatchModel get(@PathParam("code") String code) {
-        return itemBatchService.get(code);
+    public OrderItem get(@PathParam("code") String code) {
+        return orderItemService.get(code);
     }
 
-    @ApiOperation("Delete Product batch Details By Batch code ")
+    @ApiOperation("Delete Product order item Details By order item code ")
     @DELETE
     @Path("/delete/{code}")
     public Object delete(@PathParam("code") String code) {
-        return itemBatchService.remove(code);
+        return orderItemService.remove(code);
     }
 
 
-
-
-
-
-    @ApiOperation("Create Products for GRN ")
+    @ApiOperation("Create Order item  for GSN ")
     @POST
     @Path("/save")
     public Object save(BatchModel batchModel) {
-        return itemBatchService.save(batchModel);
+        return orderItemService.save(batchModel);
     }
-
 }
