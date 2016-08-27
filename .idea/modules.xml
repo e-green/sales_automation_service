@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platform/platform.iml" filepath="$PROJECT_DIR$/.idea/modules/platform/platform.iml" group="platform" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platform/platform_main.iml" filepath="$PROJECT_DIR$/.idea/modules/platform/platform_main.iml" group="platform" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platform/platform_test.iml" filepath="$PROJECT_DIR$/.idea/modules/platform/platform_test.iml" group="platform" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/products/products.iml" filepath="$PROJECT_DIR$/.idea/modules/products/products.iml" group="products" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/products/products_main.iml" filepath="$PROJECT_DIR$/.idea/modules/products/products_main.iml" group="products" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/products/products_test.iml" filepath="$PROJECT_DIR$/.idea/modules/products/products_test.iml" group="products" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesplatform.iml" filepath="$PROJECT_DIR$/.idea/modules/salesplatform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesplatform_main.iml" filepath="$PROJECT_DIR$/.idea/modules/salesplatform_main.iml" group="salesplatform" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesplatform_test.iml" filepath="$PROJECT_DIR$/.idea/modules/salesplatform_test.iml" group="salesplatform" />
+    </modules>
+  </component>
+</project>

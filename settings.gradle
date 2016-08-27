@@ -1,0 +1,4 @@
+rootProject.name = 'salesplatform'
+include 'platform'
+include 'products'
+

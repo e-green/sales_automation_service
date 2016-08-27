@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':products')
+    // https://mvnrepository.com/artifact/org.hashids/hashids
+    compile group: 'org.hashids', name: 'hashids', version: '1.0.1'
+
+}
