@@ -1,9 +1,16 @@
 package io.egreen.erp.gsn.service;
 
 import io.egreen.erp.grn.data.entity.GrnModel;
+import io.egreen.erp.gsn.data.dao.GSNDAOController;
 import io.egreen.erp.gsn.data.entity.GSNModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.hashids.Hashids;
+import org.mongodb.morphia.Key;
+
+import javax.inject.Inject;
+import java.util.UUID;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -29,11 +36,25 @@ public class GSNService {
 
     private static final Logger LOGGER = LogManager.getLogger(GSNService.class);
 
-    public Object create(GrnModel grnModel) {
-        return null;
+    @Inject
+    private GSNDAOController gsndaoController;
+
+
+    public Object create(GSNModel gsnModel) {
+        Hashids hashids = new Hashids(System.nanoTime() + "");
+        String code = hashids.encode(System.nanoTime())+gsnModel.getEmployeeCode();
+
+        gsnModel.setCode(code);
+
+
+        Key<GSNModel> grnModelKey = gsndaoController.create(gsnModel);
+        ObjectId grnModelKeyId = (ObjectId) grnModelKey.getId();
+        gsnModel.setId(grnModelKeyId);
+
+        return gsnModel;
     }
 
-    public Object finish(GrnModel grnModel) {
+    public Object finish(GSNModel gsnModel) {
         return null;
     }
 

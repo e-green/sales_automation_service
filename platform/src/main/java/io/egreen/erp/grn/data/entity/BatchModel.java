@@ -3,6 +3,8 @@ package io.egreen.erp.grn.data.entity;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 
+import java.util.Date;
+
 /**
  * Created by dewmal on 8/24/16.
  */
@@ -24,7 +26,33 @@ public class BatchModel {
     private double unitBuyingPrice;
     private long numberOfUnits;
     private long availableUnits;
+    private long reservedUnits;
     private String unit;
+    private Date batchDate;
+
+    @PrePersist
+    void prePersist() {
+        batchDate = new Date();
+        availableUnits = numberOfUnits;
+        setSellingPrice(25, false);
+
+    }
+
+    public void setSellingPrice(double value, boolean isNotPrecentage) {
+        if (isNotPrecentage) {
+            unitSellingPrice = unitBuyingPrice + value;
+        } else {
+            unitSellingPrice = unitBuyingPrice + ((unitBuyingPrice * (100 + value)) / 100);
+        }
+    }
+
+    public long getReservedUnits() {
+        return reservedUnits;
+    }
+
+    public void setReservedUnits(long reservedUnits) {
+        this.reservedUnits = reservedUnits;
+    }
 
     public ObjectId getId() {
         return id;
@@ -96,6 +124,14 @@ public class BatchModel {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Date getBatchDate() {
+        return batchDate;
+    }
+
+    public void setBatchDate(Date batchDate) {
+        this.batchDate = batchDate;
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.egreen.erp.customer.api;
 
 import io.egreen.erp.customer.db.entity.Customer;
 import io.egreen.erp.customer.service.CustomerService;
+import io.egreen.erp.supplier.data.entity.Supplier;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Created by dewmal on 8/23/16.
@@ -50,6 +52,15 @@ public class CustomerController {
             responseContainer = "Single")
     public Customer get(@PathParam("id") String id) {
         return new Customer();
+    }
+
+
+    @ApiOperation(value = "Get All Customer Details")
+    @Path("/getAll/{offset}/{limit}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Customer> getAll(@PathParam("offset") int offset, @PathParam("limit") int limit) {
+        return customerService.getAll(offset, limit);
     }
 
 }

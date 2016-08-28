@@ -7,10 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -33,6 +31,8 @@ import javax.ws.rs.PathParam;
  */
 @Api("/gsn")
 @Path("/gsn")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class GSNController {
 
     @Inject
@@ -42,16 +42,16 @@ public class GSNController {
     @ApiOperation("Save GSN Model")
     @Path("/save")
     @POST
-    public Object createGRN(GrnModel grnModel) {
-        return gsnService.create(grnModel);
+    public Object createGRN(GSNModel gsn) {
+        return gsnService.create(gsn);
     }
 
 
     @ApiOperation("Finish GSN Model")
     @Path("/finish")
     @POST
-    public Object finishGRN(GrnModel grnModel) {
-        return gsnService.finish(grnModel);
+    public Object finishGRN(GSNModel gsnModel) {
+        return gsnService.finish(gsnModel);
     }
 
 

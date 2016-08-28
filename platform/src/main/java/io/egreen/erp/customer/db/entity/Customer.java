@@ -3,6 +3,8 @@ package io.egreen.erp.customer.db.entity;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 
+import java.util.Date;
+
 /**
  * Created by dewmal on 8/23/16.
  */
@@ -15,9 +17,32 @@ public class Customer {
     @Id
     private ObjectId id;
 
+    private String code;
     private String name;
     private String nic;
     private String simpleAddress;
+    private Date registerDate;
+
+    @PostPersist
+    void postPresist() {
+        registerDate = new Date();
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public ObjectId getId() {
         return id;
@@ -55,9 +80,11 @@ public class Customer {
     public String toString() {
         return "Customer{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", nic='" + nic + '\'' +
                 ", simpleAddress='" + simpleAddress + '\'' +
+                ", registerDate=" + registerDate +
                 '}';
     }
 }

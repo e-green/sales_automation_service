@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -39,6 +40,11 @@ public class OrderItemContoller {
     @Inject
     private OrderItemService orderItemService;
 
+
+    public List<OrderItem> createOrderItems(String itemCode, long orderQunatity) {
+        return orderItemService.createOrderItems(itemCode, orderQunatity);
+    }
+
     @ApiOperation("Get Product In Order  By Product code ")
     @GET
     @Path("/get/{code}")
@@ -57,7 +63,21 @@ public class OrderItemContoller {
     @ApiOperation("Create Order item  for GSN ")
     @POST
     @Path("/save")
-    public Object save(BatchModel batchModel) {
+    public Object save(OrderItem batchModel) {
         return orderItemService.save(batchModel);
+    }
+
+    @ApiOperation("Create Order item  for GSN ")
+    @POST
+    @Path("/saveOnGsn")
+    public Object saveOnGsn(
+            @QueryParam("gsnCode")
+                    String gsnCode,
+            @QueryParam("itemCode")
+                    String itemCode,
+            @QueryParam("quantity")
+                    long orderQuantity
+    ) {
+        return orderItemService.createOrderItems(itemCode, orderQuantity);
     }
 }

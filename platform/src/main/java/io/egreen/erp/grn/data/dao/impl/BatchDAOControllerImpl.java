@@ -52,6 +52,7 @@ public class BatchDAOControllerImpl extends AbstractDAOController<BatchModel> im
 
         UpdateOperations<BatchModel> updateOperations = getDatastore().createUpdateOperations(entityClass);
         updateOperations.set("numberOfUnits", batchModel.getNumberOfUnits());
+        updateOperations.set("availableUnits", batchModel.getAvailableUnits());
         updateOperations.set("unit", batchModel.getUnit());
         updateOperations.set("unitBuyingPrice", batchModel.getUnitBuyingPrice());
         updateOperations.set("unitSellingPrice", batchModel.getUnitSellingPrice());
@@ -83,5 +84,26 @@ public class BatchDAOControllerImpl extends AbstractDAOController<BatchModel> im
 
         WriteResult delete = getDatastore().delete(filterQuery);
         return delete;
+    }
+
+    @Override
+    public List<BatchModel> getNonEmptyBatchByItemCode(String itemCode) {
+        Query<BatchModel> query = getDatastore().createQuery(entityClass);
+        query.filter("itemCode =", itemCode);
+        query.filter("availableUnits >", 0);
+        query.order("batchDate");
+        return query.asList();
+    }
+
+    @Override
+    public void updateAvailableUnits(String code, long orderQuantity,long reservedUnits) {
+        Query<BatchModel> filterQuery = getDatastore().createQuery(entityClass);
+        filterQuery.filter("code =", code);
+
+        UpdateOperations<BatchModel> updateOperations = getDatastore().createUpdateOperations(entityClass);
+        updateOperations.set("availableUnits", orderQuantity);
+        updateOperations.set("reservedUnits", orderQuantity);
+
+        getDatastore().update(filterQuery, updateOperations);
     }
 }

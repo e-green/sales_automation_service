@@ -1,10 +1,9 @@
 package io.egreen.erp.grn.data.entity;
 
-import io.egreen.erp.product.data.entity.Product;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.PrePersist;
 
 import java.util.Date;
 
@@ -22,6 +21,12 @@ public class GrnModel {
     private Date receivedTime;
     private Date finishedTime;
     private boolean finished;
+
+    @PrePersist
+    void prePersist() {
+        receivedTime = new Date();
+
+    }
 
     public Date getFinishedTime() {
         return finishedTime;

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by dewmal on 8/23/16.
@@ -22,5 +23,9 @@ public class CustomerService {
     public Object saveCustomer(Customer customer) {
         LOGGER.info(customer);
         return customerDAOController.create(customer).getId();
+    }
+
+    public List<Customer> getAll(int offset, int limit) {
+        return customerDAOController.getAll(offset, limit);
     }
 }
