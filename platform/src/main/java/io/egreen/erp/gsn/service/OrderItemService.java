@@ -1,8 +1,11 @@
 package io.egreen.erp.gsn.service;
 
+import io.egreen.apistudio.bootstrap.msg.ReseponseMessage;
 import io.egreen.erp.grn.data.dao.BatchDAOController;
 import io.egreen.erp.grn.data.entity.BatchModel;
+import io.egreen.erp.gsn.data.dao.GSNDAOController;
 import io.egreen.erp.gsn.data.dao.OrderItemDAOController;
+import io.egreen.erp.gsn.data.entity.GSNModel;
 import io.egreen.erp.gsn.data.entity.OrderItem;
 import io.egreen.erp.product.data.dao.ProductDAOController;
 import org.apache.logging.log4j.LogManager;
@@ -47,50 +50,154 @@ public class OrderItemService {
     @Inject
     private ProductDAOController productDAOController;
 
+    @Inject
+    private GSNDAOController gsndaoController;
+
 
     public OrderItem get(String code) {
-        return null;
+        return orderItemDAOController.get(code);
     }
 
+
+    /**
+     * DELETE Order Item
+     * <p>
+     * You cannot delete/remove closed orders items.
+     * You cannot delete/remove non exists order items.
+     *
+     * @param code
+     * @return
+     */
     public Object remove(String code) {
-        return null;
+
+
+        OrderItem orderItem = orderItemDAOController.get(code);
+
+        if (orderItem != null) {
+
+            GSNModel gsnModel = gsndaoController.get(orderItem.getOrderCode());
+            if (gsnModel != null && !gsnModel.isClosed()) {
+
+                LOGGER.info(orderItem);
+
+                BatchModel batchModel = batchDAOController.get(orderItem.getBatchCode());
+
+                batchModel.setReservedUnits(batchModel.getReservedUnits() - orderItem.getNumberOfUnits());
+                batchModel.setAvailableUnits(batchModel.getAvailableUnits() + orderItem.getNumberOfUnits());
+
+                batchDAOController.updateAvailableUnits(batchModel);
+                orderItemDAOController.remove(code);
+            } else {
+                return new ReseponseMessage(ReseponseMessage.Type.ERROR, "You cannot remove this Order item, GSN order is closed");
+            }
+        } else {
+            return new ReseponseMessage(ReseponseMessage.Type.ERROR, "There are no valid Order item");
+        }
+        return new ReseponseMessage(ReseponseMessage.Type.SUCCESS, "Delete success");
     }
 
     public Object save(OrderItem batchModel) {
         orderItemDAOController.create(batchModel);
-        return null;
+        return new ReseponseMessage(ReseponseMessage.Type.SUCCESS, "Save success");
     }
 
-    public List<OrderItem> createOrderItems(String itemCode, long orderQuantity) {
+    public Object createOrderItems(String itemCode, String orderCode, long orderQuantity, double discount) {
         List<OrderItem> orderItems = new ArrayList<>();
         List<BatchModel> batchModels = batchDAOController.getNonEmptyBatchByItemCode(itemCode);
-        for (int i = 0; i < batchModels.size(); i++) {
-            BatchModel batchModel = batchModels.get(i);
-            OrderItem orderItem = new OrderItem();
-            if (orderQuantity < batchModel.getAvailableUnits()) {
+//        for (BatchModel batchModel : batchModels) {
+//            LOGGER.info(batchModel);
+//        }
+        LOGGER.info(batchModels);
+
+
+        GSNModel gsnModel = gsndaoController.get(orderCode);
+
+//        long remainOrderQunatity = orderQuantity;
+
+        if (gsnModel != null && !gsnModel.isClosed()) {
+
+            for (int i = 0; i < batchModels.size() && orderQuantity > 0; i++) {
+                BatchModel batchModel = batchModels.get(i);
+
+//            LOGGER.info(orderQuantity);
+
+                OrderItem orderItem = new OrderItem();
+                if (orderQuantity < batchModel.getAvailableUnits()) {
+                    orderItem.setNumberOfUnits(orderQuantity);
+
+                    batchModel.setReservedUnits(batchModel.getReservedUnits() + orderQuantity);
+                    batchModel.setAvailableUnits(batchModel.getAvailableUnits() - orderQuantity);
+                } else {
+//                throw new Exception("Not impliemtnted please methana karana oni order eka quantity ekata wada batcfh eka adui nan anik batch walin aragena purwana eka. ")
+                    long availableQuantity = orderQuantity - batchModel.getAvailableUnits();
+                    orderItem.setNumberOfUnits(batchModel.getAvailableUnits());
+
+                    batchModel.setAvailableUnits(0);
+                    batchModel.setReservedUnits(batchModel.getReservedUnits() + batchModel.getAvailableUnits());
+                }
+
+                // Set Unique code for order item model
+                orderItem.setCode(getUniqueId(System.currentTimeMillis()) + itemCode);
+                orderItem.setOrderCode(orderCode);
+
                 orderItem.setItemCode(itemCode);
                 orderItem.setBatchCode(batchModel.getCode());
-                orderItem.setNumberOfUnits(orderQuantity);
-            } else {
-                throw new Exception("Not impliemtnted please methana karana oni order eka quantity ekata wada batcfh eka adui nan anik batch walin aragena purwana eka. ")
+                orderItem.setUnit(batchModel.getUnit());
+                orderItem.setUnitPrice(batchModel.getUnitSellingPrice());
+                orderItem.setUnitDiscount(discount);
+
+                orderItemDAOController.create(orderItem);
+
+                // Update Batch For Available units
+                batchDAOController.updateAvailableUnits(batchModel);
+
+                orderItems.add(orderItem);
+
+                orderQuantity = orderQuantity - orderItem.getNumberOfUnits();
             }
-
-            // Set Unique code for order item model
-            orderItem.setCode(getUniqueId(System.currentTimeMillis()) + itemCode);
-            orderItemDAOController.create(orderItem);
-
-            // Update Batch For Available units
-            batchDAOController.updateAvailableUnits(batchModel.getCode(), batchModel.getAvailableUnits() - orderQuantity, orderQuantity);
+        } else {
+            return new ReseponseMessage(ReseponseMessage.Type.ERROR, "Invalid order, Order is null or closed");
         }
-
-
-        LOGGER.info(batchModels);
 
 
         return orderItems;
     }
 
+    /**
+     * @param key
+     * @return
+     */
     private String getUniqueId(long key) {
         return new Hashids(System.nanoTime() + "").encode(key);
+    }
+
+    /**
+     * Close Order Items in GSN Order
+     *
+     * @param gsnCode
+     * @return
+     */
+    public List<OrderItem> closeOrderItems(String gsnCode) {
+        List<OrderItem> orderItems = orderItemDAOController.getAllOrderItemsFromGSNOrderCode(gsnCode);
+        for (OrderItem orderItem : orderItems) {
+            BatchModel batchModel = batchDAOController.get(orderItem.getBatchCode());
+            batchModel.setReservedUnits(batchModel.getReservedUnits() - orderItem.getNumberOfUnits());
+            batchDAOController.updateBatchQuantity(batchModel);
+        }
+        LOGGER.info(orderItems);
+        return orderItems;
+    }
+
+    /**
+     * Set Discount To Order Items
+     *
+     * @param orderItemCode
+     * @param discount
+     * @param isValue
+     * @return
+     */
+    public Object setDiscount(String orderItemCode, double discount, boolean isValue) {
+        boolean setDiscountIsOk = (boolean) orderItemDAOController.setDiscount(orderItemCode, discount, isValue);
+        return orderItemDAOController.get(orderItemCode);
     }
 }

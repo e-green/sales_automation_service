@@ -3,6 +3,12 @@ package io.egreen.erp.gsn.data.dao.impl;
 import io.egreen.apistudio.datalayer.mongodb.dao.impl.AbstractDAOController;
 import io.egreen.erp.gsn.data.dao.GSNDAOController;
 import io.egreen.erp.gsn.data.entity.GSNModel;
+import io.egreen.erp.gsn.data.entity.OrderItem;
+import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -27,5 +33,28 @@ import io.egreen.erp.gsn.data.entity.GSNModel;
 public class GSNDAOContollerImpl extends AbstractDAOController<GSNModel> implements GSNDAOController {
     public GSNDAOContollerImpl() {
         super(GSNModel.class);
+    }
+
+    @Override
+    public List<GSNModel> getOrderByCustomerCode(String customerCode, boolean isClosed) {
+        Query<GSNModel> query = getQuery();
+        query.filter("customerCode =", customerCode);
+        query.filter("isClosed =", isClosed);
+        return query.asList();
+    }
+
+    @Override
+    public void closeOrder(GSNModel gsnModel) {
+
+        Query<GSNModel> filter = getQuery().filter("code =", gsnModel.getCode());
+
+        UpdateOperations<GSNModel> updateOperations = getDatastore().createUpdateOperations(entityClass);
+
+        updateOperations.set("isClosed", true);
+        updateOperations.set("finishTime", new Date());
+
+        updateOperations.set("orderItems", gsnModel.getOrderItems());
+
+        getDatastore().update(filter, updateOperations);
     }
 }

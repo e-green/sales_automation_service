@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -34,16 +35,14 @@ import java.util.List;
 
 @Api("/orderItem")
 @Path("/orderItem")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class OrderItemContoller {
     private static final Logger LOGGER = LogManager.getLogger(OrderItemContoller.class);
 
     @Inject
     private OrderItemService orderItemService;
 
-
-    public List<OrderItem> createOrderItems(String itemCode, long orderQunatity) {
-        return orderItemService.createOrderItems(itemCode, orderQunatity);
-    }
 
     @ApiOperation("Get Product In Order  By Product code ")
     @GET
@@ -52,7 +51,12 @@ public class OrderItemContoller {
         return orderItemService.get(code);
     }
 
-    @ApiOperation("Delete Product order item Details By order item code ")
+    @ApiOperation(value = "Delete Product order item Details By order item code "
+
+            , notes = "* DELETE Order Item\n" +
+            "     * You cannot delete/remove closed orders items.\n" +
+            "     * You cannot delete/remove non exists order items."
+    )
     @DELETE
     @Path("/delete/{code}")
     public Object delete(@PathParam("code") String code) {
@@ -67,7 +71,9 @@ public class OrderItemContoller {
         return orderItemService.save(batchModel);
     }
 
-    @ApiOperation("Create Order item  for GSN ")
+    @ApiOperation(value = "Create Order item  for GSN ", notes = "" +
+            "Get added items as Order item" +
+            "Get ")
     @POST
     @Path("/saveOnGsn")
     public Object saveOnGsn(
@@ -76,8 +82,20 @@ public class OrderItemContoller {
             @QueryParam("itemCode")
                     String itemCode,
             @QueryParam("quantity")
-                    long orderQuantity
+                    long orderQuantity,
+            @QueryParam("discount")
+                    double discount
     ) {
-        return orderItemService.createOrderItems(itemCode, orderQuantity);
+        return orderItemService.createOrderItems(itemCode, gsnCode, orderQuantity, discount);
     }
+
+    @ApiOperation(value = "Set Item discount for the order item ", notes = "" +
+            "Added item Discount ")
+    @POST
+    @Path("/setItemDiscount")
+    public Object setDiscount(@QueryParam("orderItemCode") String orderItemCode, @QueryParam("discount") double discount, @QueryParam("isValue") boolean isValue) {
+        return orderItemService.setDiscount(orderItemCode, discount, isValue);
+    }
+
+
 }

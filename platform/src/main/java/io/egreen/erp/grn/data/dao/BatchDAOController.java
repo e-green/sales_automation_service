@@ -20,13 +20,32 @@ public interface BatchDAOController extends DAOController<BatchModel> {
      */
     String getNextBatchID(String itemCode);
 
+
     BatchModel update(BatchModel batchModel);
 
     WriteResult removeFromOrder(String code);
 
     BatchModel createForObject(BatchModel batchModel);
 
+    /**
+     * Get Batch What non empty with available quantity
+     *
+     * @param itemCode
+     * @return
+     */
     List<BatchModel> getNonEmptyBatchByItemCode(String itemCode);
 
-    void updateAvailableUnits(String code, long orderQuantity,long reservedUnits);
+    /**
+     * Update Available units
+     *
+     * @param batchModel
+     */
+    void updateAvailableUnits(BatchModel batchModel);
+
+    /**
+     * Update Batch Quantity
+     *
+     * @param batchModel
+     */
+    void updateBatchQuantity(BatchModel batchModel);
 }

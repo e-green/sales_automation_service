@@ -23,8 +23,8 @@
       <module name="platform_test" target="1.8" />
       <module name="products_main" target="1.8" />
       <module name="products_test" target="1.8" />
-      <module name="salesplatform_main" target="1.5" />
-      <module name="salesplatform_test" target="1.5" />
+      <module name="salesplatform_main" target="1.8" />
+      <module name="salesplatform_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

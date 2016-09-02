@@ -1,8 +1,11 @@
 package io.egreen.erp.gsn.service;
 
+import io.egreen.apistudio.bootstrap.msg.ReseponseMessage;
 import io.egreen.erp.grn.data.entity.GrnModel;
 import io.egreen.erp.gsn.data.dao.GSNDAOController;
+import io.egreen.erp.gsn.data.dao.OrderItemDAOController;
 import io.egreen.erp.gsn.data.entity.GSNModel;
+import io.egreen.erp.gsn.data.entity.OrderItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -10,6 +13,8 @@ import org.hashids.Hashids;
 import org.mongodb.morphia.Key;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,26 +44,51 @@ public class GSNService {
     @Inject
     private GSNDAOController gsndaoController;
 
+    @Inject
+    private OrderItemService orderItemService;
 
+
+    /**
+     * Create GSN Model
+     *
+     * @param gsnModel
+     * @return
+     */
     public Object create(GSNModel gsnModel) {
         Hashids hashids = new Hashids(System.nanoTime() + "");
-        String code = hashids.encode(System.nanoTime())+gsnModel.getEmployeeCode();
-
+        String code = hashids.encode(System.nanoTime()) + gsnModel.getEmployeeCode();
         gsnModel.setCode(code);
-
-
         Key<GSNModel> grnModelKey = gsndaoController.create(gsnModel);
         ObjectId grnModelKeyId = (ObjectId) grnModelKey.getId();
         gsnModel.setId(grnModelKeyId);
-
         return gsnModel;
     }
 
+    /**
+     * @param gsnModel
+     * @return
+     */
     public Object finish(GSNModel gsnModel) {
-        return null;
+
+        GSNModel gsnSavedModel = gsndaoController.get(gsnModel.getCode());
+
+        if (gsnSavedModel != null && !gsnSavedModel.isClosed()) {
+            List<OrderItem> orderItems = orderItemService.closeOrderItems(gsnModel.getCode());
+            gsnModel.setOrderItems(orderItems);
+            gsndaoController.closeOrder(gsnModel);
+            return gsnModel;
+        } else {
+            LOGGER.warn("Try to close closed order");
+            return new ReseponseMessage(ReseponseMessage.Type.ERROR, "Order is already closed");
+        }
     }
 
     public GSNModel get(String code) {
         return null;
+    }
+
+    public Object getAllCustomerClosedOrder(String customerCode) {
+        List<GSNModel> gsnModels = gsndaoController.getOrderByCustomerCode(customerCode, true);
+        return gsnModels;
     }
 }

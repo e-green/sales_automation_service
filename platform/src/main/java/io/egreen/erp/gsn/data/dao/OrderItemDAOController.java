@@ -3,6 +3,8 @@ package io.egreen.erp.gsn.data.dao;
 import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
 import io.egreen.erp.gsn.data.entity.OrderItem;
 
+import java.util.List;
+
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
  * <p>
@@ -24,4 +26,9 @@ import io.egreen.erp.gsn.data.entity.OrderItem;
  */
 
 public interface OrderItemDAOController extends DAOController<OrderItem> {
+    void remove(String code);
+
+    List<OrderItem> getAllOrderItemsFromGSNOrderCode(String gsnCode);
+
+    Object setDiscount(String orderItemCode, double discount, boolean isValue);
 }

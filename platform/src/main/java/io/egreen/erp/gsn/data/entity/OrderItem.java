@@ -32,12 +32,21 @@ public class OrderItem {
     private ObjectId id;
     private String code;
     private String itemCode;
+    private String orderCode;
     private String batchCode;
     private String unit;
     private long numberOfUnits;
     private double unitPrice;
     private double unitDiscount;
     private double totalDiscount;
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
 
     public String getBatchCode() {
         return batchCode;

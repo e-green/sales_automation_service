@@ -63,4 +63,10 @@ public class GSNController {
     }
 
 
+    @ApiOperation(value = "Get All Closed orders by customer ID")
+    @GET
+    @Path("/getClosedOrdersByCustomerName")
+    public Object getAllClosedOrders(@QueryParam("customerCoder") String customerCode){
+        return gsnService.getAllCustomerClosedOrder(customerCode);
+    }
 }
