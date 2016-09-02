@@ -1,5 +1,6 @@
 package io.egreen.erp.product.service;
 
+import io.egreen.apistudio.bootstrap.msg.ReseponseMessage;
 import io.egreen.erp.product.data.dao.ProductDAOController;
 import io.egreen.erp.product.data.entity.Product;
 
@@ -37,7 +38,10 @@ public class ProductService {
      * @return
      */
     public Object save(Product product) {
-        return productDAOController.create(product);
+        if (productDAOController.get(product.getCode()) == null) {
+            return productDAOController.create(product);
+        }
+        return new ReseponseMessage(ReseponseMessage.Type.ERROR, "Try to save Exsisting Item");
     }
 
     /**
@@ -48,6 +52,6 @@ public class ProductService {
      * @return
      */
     public List<Product> getAll(int offset, int limit) {
-        return productDAOController.getAll(offset,limit);
+        return productDAOController.getAll(offset, limit);
     }
 }
