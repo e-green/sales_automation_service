@@ -6,6 +6,7 @@ import io.egreen.erp.gsn.data.dao.GSNDAOController;
 import io.egreen.erp.gsn.data.dao.OrderItemDAOController;
 import io.egreen.erp.gsn.data.entity.GSNModel;
 import io.egreen.erp.gsn.data.entity.OrderItem;
+import io.egreen.erp.payment.service.PaymentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -47,6 +48,9 @@ public class GSNService {
 
     @Inject
     private OrderItemService orderItemService;
+
+    @Inject
+    private PaymentService paymentService;
 
 
     /**
@@ -92,6 +96,19 @@ public class GSNService {
         if (gsnSavedModel != null && !gsnSavedModel.isClosed()) {
             List<OrderItem> orderItems = orderItemService.closeOrderItems(gsnModel.getCode());
             gsnModel.setOrderItems(orderItems);
+            double amount = 0;
+            double numberOfUnits = 0;
+            double unitPrice=0;
+            double discount=0;
+            double totaldiscount=0;
+            double temp=0;
+            for (OrderItem orderItem : orderItems) {
+                temp=(unitPrice*numberOfUnits)-(unitPrice/100*discount)-totaldiscount;
+                amount+=temp;
+            }
+            //payment add start
+            paymentService.newPayment(gsnModel.getCode(), amount);
+            //payment end
             gsndaoController.closeOrder(gsnModel);
             return gsnModel;
         } else {

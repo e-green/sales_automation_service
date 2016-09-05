@@ -2,7 +2,10 @@ package io.egreen.erp.transaction.data.dao.impl;
 
 import io.egreen.apistudio.datalayer.mongodb.dao.impl.AbstractDAOController;
 import io.egreen.erp.transaction.data.dao.TransactionDAO;
-import io.egreen.erp.transaction.data.entity.Transaction;
+import io.egreen.erp.transaction.data.entity.TransactionModel;
+import org.mongodb.morphia.query.Query;
+
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -24,9 +27,17 @@ import io.egreen.erp.transaction.data.entity.Transaction;
  * Created by dewmal on 9/3/16.
  */
 
-public class TransactionDAOImpl extends AbstractDAOController<Transaction> implements TransactionDAO {
+public class TransactionDAOImpl extends AbstractDAOController<TransactionModel> implements TransactionDAO {
 
     public TransactionDAOImpl() {
-        super(Transaction.class);
+        super(TransactionModel.class);
+    }
+
+    @Override
+    public List<TransactionModel> checkTransaction(String orderId, String payId) {
+        Query<TransactionModel> query = getQuery();
+        query.filter("orderId",orderId);
+        query.filter("payId",payId);
+        return query.asList();
     }
 }

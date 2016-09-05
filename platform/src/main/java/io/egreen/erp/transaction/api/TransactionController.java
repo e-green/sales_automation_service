@@ -1,6 +1,7 @@
 package io.egreen.erp.transaction.api;
 
-import io.egreen.erp.transaction.data.entity.Transaction;
+
+import io.egreen.erp.transaction.data.entity.TransactionModel;
 import io.egreen.erp.transaction.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -31,17 +33,17 @@ import javax.ws.rs.Path;
 
 @Api(value = "/transaction", description = "All Transaction are handle hear")
 @Path("/transaction")
-public class TransactionApi {
+public class TransactionController {
 
     @Inject
     private TransactionService transactionService;
 
 
-    @ApiOperation(value = "/save", notes = "Save Transaction Object")
+    @ApiOperation(value = "/save Transaction ", notes = "Save Transaction Object")
     @POST
     @Path("/save")
-    public Object create(Transaction transaction) {
-        return transactionService.create(transaction);
+    public boolean create(@QueryParam("orderId") String orderId, @QueryParam("amount") double amount,@QueryParam("typeId") String typeId) {
+        return transactionService.createGSNOrderTransaction(orderId,amount,typeId);
     }
 
 }

@@ -1,7 +1,9 @@
 package io.egreen.erp.transaction.data.dao;
 
 import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
-import io.egreen.erp.transaction.data.entity.Transaction;
+import io.egreen.erp.transaction.data.entity.TransactionModel;
+
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -23,5 +25,8 @@ import io.egreen.erp.transaction.data.entity.Transaction;
  * Created by dewmal on 9/3/16.
  */
 
-public interface TransactionDAO extends DAOController<Transaction> {
+public interface TransactionDAO extends DAOController<TransactionModel> {
+
+
+    List<TransactionModel> checkTransaction(String orderId, String payId);
 }

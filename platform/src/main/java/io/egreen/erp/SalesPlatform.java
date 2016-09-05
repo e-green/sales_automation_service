@@ -18,6 +18,6 @@ import javax.ws.rs.ApplicationPath;
 public class SalesPlatform {
 
     public static void main(String[] args) {
-        ApiStudio.boot(SalesPlatform.class, "0.0.0.0", 6080, "/erp", MongoModuleInitializer.class);
+        ApiStudio.boot(SalesPlatform.class, "localhost", 6080, "/erp", MongoModuleInitializer.class);
     }
 }
