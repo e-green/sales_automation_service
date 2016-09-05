@@ -1,5 +1,6 @@
 package io.egreen.erp.gsn.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -29,6 +30,7 @@ public class OrderItem {
 
 
     @Id
+    @JsonIgnore
     private ObjectId id;
     private String code;
     private String itemCode;

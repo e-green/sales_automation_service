@@ -200,4 +200,8 @@ public class OrderItemService {
         boolean setDiscountIsOk = (boolean) orderItemDAOController.setDiscount(orderItemCode, discount, isValue);
         return orderItemDAOController.get(orderItemCode);
     }
+
+    public List<OrderItem> getOrderItems(String code) {
+        return orderItemDAOController.getAllOrderItemsFromGSNOrderCode(code);
+    }
 }

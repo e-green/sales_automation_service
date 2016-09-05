@@ -1,6 +1,5 @@
 package io.egreen.erp.gsn.api;
 
-import io.egreen.erp.grn.data.entity.BatchModel;
 import io.egreen.erp.gsn.data.entity.OrderItem;
 import io.egreen.erp.gsn.service.OrderItemService;
 import io.swagger.annotations.Api;
@@ -11,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -42,6 +40,13 @@ public class OrderItemContoller {
 
     @Inject
     private OrderItemService orderItemService;
+
+    @ApiOperation("Get Product In Order  By Order code ")
+    @GET
+    @Path("/getOrderItems/{code}")
+    public Object getOrderItems(@PathParam("code") String code) {
+        return orderItemService.getOrderItems(code);
+    }
 
 
     @ApiOperation("Get Product In Order  By Product code ")

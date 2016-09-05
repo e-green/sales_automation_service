@@ -43,15 +43,15 @@ public class CustomerController {
     }
 
 
-    @Path("/view/{id}")
+    @Path("/get/{code}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Get Unique Customer Details by key",
             notes = "Need customer unique identifier",
             response = Customer.class,
             responseContainer = "Single")
-    public Customer get(@PathParam("id") String id) {
-        return new Customer();
+    public Customer get(@PathParam("code") String code) {
+        return customerService.get(code);
     }
 
 

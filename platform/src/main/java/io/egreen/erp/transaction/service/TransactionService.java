@@ -1,9 +1,10 @@
-package io.egreen.erp.gsn.data.dao;
+package io.egreen.erp.transaction.service;
 
-import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
-import io.egreen.erp.gsn.data.entity.GSNModel;
+import io.egreen.erp.transaction.data.dao.TransactionDAO;
+import io.egreen.erp.transaction.data.entity.Transaction;
+import org.hashids.Hashids;
 
-import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -22,20 +23,22 @@ import java.util.List;
  * specific language governing permissions and limitations
  * under the License.
  * <p>
- * Created by dewmal on 8/27/16.
+ * Created by dewmal on 9/3/16.
  */
 
-public interface GSNDAOController extends DAOController<GSNModel> {
-    List<GSNModel> getOrderByCustomerCode(String customerCode, boolean isClosed);
+public class TransactionService {
 
+    @Inject
+    private TransactionDAO transactionDAO;
 
-    /**
-     *
-     * Close Order
-     *
-     * @param gsnModel
-     */
-    void closeOrder(GSNModel gsnModel);
+    public Object create(Transaction transaction) {
 
-    GSNModel getNotClosedOrderByCustomerCode(String customerCode);
+        Hashids hashids = new Hashids(System.nanoTime() + "");
+        String code = hashids.encode(System.currentTimeMillis(), (long) transaction.getAmount());
+        transaction.setCode(code);
+
+        transactionDAO.create(transaction);
+
+        return transaction;
+    }
 }
