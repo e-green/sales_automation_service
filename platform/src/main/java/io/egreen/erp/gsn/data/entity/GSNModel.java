@@ -1,5 +1,6 @@
 package io.egreen.erp.gsn.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -31,6 +32,7 @@ import java.util.List;
 public class GSNModel {
 
     @Id
+    @JsonIgnore
     private ObjectId id;
     private String code;
     private String customerCode;
@@ -103,5 +105,19 @@ public class GSNModel {
 
     public void setClosed(boolean closed) {
         isClosed = closed;
+    }
+
+    @Override
+    public String toString() {
+        return "GSNModel{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", customerCode='" + customerCode + '\'' +
+                ", employeeCode='" + employeeCode + '\'' +
+                ", createTime=" + createTime +
+                ", finishTime=" + finishTime +
+                ", isClosed=" + isClosed +
+                ", orderItems=" + orderItems +
+                '}';
     }
 }

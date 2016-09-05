@@ -1,5 +1,6 @@
 package io.egreen.erp.customer.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 public class Customer {
 
     @Id
+    @JsonIgnore
     private ObjectId id;
 
     private String code;

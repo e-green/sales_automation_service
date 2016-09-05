@@ -57,4 +57,12 @@ public class GSNDAOContollerImpl extends AbstractDAOController<GSNModel> impleme
 
         getDatastore().update(filter, updateOperations);
     }
+
+    @Override
+    public GSNModel getNotClosedOrderByCustomerCode(String customerCode) {
+        Query<GSNModel> filter = getQuery()
+                .filter("customerCode =", customerCode)
+                .filter("isClosed =", false);
+        return filter.get();
+    }
 }

@@ -28,4 +28,19 @@ public class CustomerService {
     public List<Customer> getAll(int offset, int limit) {
         return customerDAOController.getAll(offset, limit);
     }
+
+    /**
+     * Get Customer By Customer Code
+     *
+     * @param code
+     * @return
+     */
+    public Customer get(String code) {
+        Customer customer = customerDAOController.get(code);
+        if (customer == null) {
+            return new Customer();
+        }
+
+        return customer;
+    }
 }

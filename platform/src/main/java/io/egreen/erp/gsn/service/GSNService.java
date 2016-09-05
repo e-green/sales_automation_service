@@ -14,6 +14,7 @@ import org.mongodb.morphia.Key;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,17 +51,33 @@ public class GSNService {
 
     /**
      * Create GSN Model
+     * <p></p>
+     * One Customer Have one not closed order at a time
      *
      * @param gsnModel
      * @return
      */
     public Object create(GSNModel gsnModel) {
-        Hashids hashids = new Hashids(System.nanoTime() + "");
-        String code = hashids.encode(System.nanoTime()) + gsnModel.getEmployeeCode();
-        gsnModel.setCode(code);
-        Key<GSNModel> grnModelKey = gsndaoController.create(gsnModel);
-        ObjectId grnModelKeyId = (ObjectId) grnModelKey.getId();
-        gsnModel.setId(grnModelKeyId);
+        GSNModel notClosedOrderByCustomerCode = gsndaoController.getNotClosedOrderByCustomerCode(gsnModel.getCustomerCode());
+
+
+        if (notClosedOrderByCustomerCode == null) {
+
+            Hashids hashids = new Hashids(System.nanoTime() + "");
+            String code = hashids.encode(System.nanoTime()) + gsnModel.getCustomerCode();
+            gsnModel.setCode(code);
+
+            gsnModel.setCreateTime(new Date());
+
+            Key<GSNModel> grnModelKey = gsndaoController.create(gsnModel);
+            ObjectId grnModelKeyId = (ObjectId) grnModelKey.getId();
+            gsnModel.setId(grnModelKeyId);
+
+        } else {
+            gsnModel = notClosedOrderByCustomerCode;
+        }
+        LOGGER.info(gsnModel);
+
         return gsnModel;
     }
 

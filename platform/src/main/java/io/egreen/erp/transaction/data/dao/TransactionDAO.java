@@ -1,9 +1,7 @@
-package io.egreen.erp.gsn.data.dao;
+package io.egreen.erp.transaction.data.dao;
 
 import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
-import io.egreen.erp.gsn.data.entity.GSNModel;
-
-import java.util.List;
+import io.egreen.erp.transaction.data.entity.Transaction;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -22,20 +20,8 @@ import java.util.List;
  * specific language governing permissions and limitations
  * under the License.
  * <p>
- * Created by dewmal on 8/27/16.
+ * Created by dewmal on 9/3/16.
  */
 
-public interface GSNDAOController extends DAOController<GSNModel> {
-    List<GSNModel> getOrderByCustomerCode(String customerCode, boolean isClosed);
-
-
-    /**
-     *
-     * Close Order
-     *
-     * @param gsnModel
-     */
-    void closeOrder(GSNModel gsnModel);
-
-    GSNModel getNotClosedOrderByCustomerCode(String customerCode);
+public interface TransactionDAO extends DAOController<Transaction> {
 }
