@@ -1,7 +1,6 @@
 package io.egreen.erp.transaction.api;
 
 
-import io.egreen.erp.transaction.data.entity.TransactionModel;
 import io.egreen.erp.transaction.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +43,7 @@ public class TransactionController {
     @Path("/save")
     public boolean create(@QueryParam("orderId") String orderId, @QueryParam("amount") double amount,@QueryParam("typeId") String typeId) {
         return transactionService.createGSNOrderTransaction(orderId,amount,typeId);
+
     }
 
 }

@@ -1,12 +1,11 @@
 package io.egreen.erp.transaction.service;
 
+import io.egreen.apistudio.bootstrap.status.StatusMessage;
 import io.egreen.apistudio.bootstrap.utill.IDUtilty;
 import io.egreen.erp.payment.data.dao.PaymentDAO;
 import io.egreen.erp.payment.data.entity.PaymentModel;
 import io.egreen.erp.transaction.data.dao.TransactionDAO;
 import io.egreen.erp.transaction.data.entity.TransactionModel;
-import org.hashids.Hashids;
-import org.jboss.weld.logging.UtilLogger;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -98,7 +97,8 @@ public class TransactionService {
         for (PaymentModel model : modelList) {
             paymentModel = model;
         }
-        paymentModel.setStatus("finished");
+        StatusMessage finished = new StatusMessage(StatusMessage.Type.FINISHED);
+        paymentModel.setStatus(finished.getType().toString());
         paymentDAO.updatePaymentStatus(paymentModel);
     }
 }
