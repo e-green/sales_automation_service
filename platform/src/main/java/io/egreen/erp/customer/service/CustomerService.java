@@ -7,12 +7,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 /**
  * Created by dewmal on 8/23/16.
  */
-@Stateless
+//@Named
 public class CustomerService {
 
     private static final Logger LOGGER = LogManager.getLogger(CustomerService.class);

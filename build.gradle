@@ -27,6 +27,14 @@ subprojects{
         compile 'io.egreen.apistudio:bootstrap:0.1'
         compile 'io.egreen.apistudio:mongo-datalayer:0.0.8'
     }
+
+
+    task copyToLib(type: Copy) {
+        into "$buildDir/output/lib"
+        from configurations.runtime
+    }
+
+
 }
 
 dependencies {

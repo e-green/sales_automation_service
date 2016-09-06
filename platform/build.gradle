@@ -4,3 +4,11 @@ dependencies {
     compile group: 'org.hashids', name: 'hashids', version: '1.0.1'
 
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'io.egreen.erp.SalesPlatform'
+        )
+    }
+}
