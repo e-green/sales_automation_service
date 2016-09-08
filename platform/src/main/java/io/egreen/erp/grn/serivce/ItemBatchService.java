@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by dewmal on 8/24/16.
@@ -70,4 +71,13 @@ public class ItemBatchService {
     }
 
 
+    public List<BatchModel> availableBatch(int availableUnits, int ofset, int limit) {
+        if (availableUnits == 0) {
+            return batchDAOController.chechAvailability(availableUnits, ofset, limit);
+        } else if (availableUnits == 1) {
+            availableUnits = 0;
+            return batchDAOController.chechAvailability2(availableUnits, ofset, limit);
+        }
+        return null;
+    }
 }

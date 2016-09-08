@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -61,6 +62,17 @@ public class BatchController {
     @Path("/save")
     public Object save(BatchModel batchModel) {
         return itemBatchService.save(batchModel);
+    }
+
+
+    @Path("/availablebatch")
+    @GET
+    @ApiOperation(
+            value = "get available batch",
+            notes = "Get Available units from Database , You must pass 1 and 0 for this availableUnits parameter.0={empty},1={available}"
+    )
+    public Object availableBatch(@QueryParam("availableUnits")int availableUnits,@QueryParam("offset") int ofset, @QueryParam("limit") int limit) {
+        return itemBatchService.availableBatch(availableUnits,ofset,limit);
     }
 
 }

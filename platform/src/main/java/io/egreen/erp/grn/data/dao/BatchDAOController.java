@@ -48,4 +48,8 @@ public interface BatchDAOController extends DAOController<BatchModel> {
      * @param batchModel
      */
     void updateBatchQuantity(BatchModel batchModel);
+
+    List<BatchModel> chechAvailability(int availableUnits, int ofset, int limit);
+
+    List<BatchModel> chechAvailability2(int availableUnits, int ofset, int limit);
 }

@@ -125,4 +125,9 @@ public class GSNService {
         List<GSNModel> gsnModels = gsndaoController.getOrderByCustomerCode(customerCode, true);
         return gsnModels;
     }
+
+    public List<GSNModel> getSalesByDate(String finishTime, int offset, int limit) {
+        System.out.println(finishTime);
+        return gsndaoController.getSalesByDate(finishTime,offset,limit);
+    }
 }

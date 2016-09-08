@@ -3,6 +3,7 @@ package io.egreen.erp.gsn.data.dao;
 import io.egreen.apistudio.datalayer.mongodb.dao.DAOController;
 import io.egreen.erp.gsn.data.entity.GSNModel;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,4 +39,6 @@ public interface GSNDAOController extends DAOController<GSNModel> {
     void closeOrder(GSNModel gsnModel);
 
     GSNModel getNotClosedOrderByCustomerCode(String customerCode);
+
+    List<GSNModel> getSalesByDate(String finishTime, int offset, int limit);
 }

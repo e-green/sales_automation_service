@@ -65,4 +65,14 @@ public class GSNDAOContollerImpl extends AbstractDAOController<GSNModel> impleme
                 .filter("isClosed =", false);
         return filter.get();
     }
+
+    @Override
+    public List<GSNModel> getSalesByDate(String finishTime, int offset, int limit) {
+        Query<GSNModel> query = getQuery();
+        query.filter("finishTime=", finishTime);
+        query.offset(offset);
+        query.limit(limit);
+
+        return query.asList();
+    }
 }

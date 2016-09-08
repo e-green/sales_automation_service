@@ -118,4 +118,22 @@ public class BatchDAOControllerImpl extends AbstractDAOController<BatchModel> im
 
         getDatastore().update(filterQuery, updateOperations);
     }
+
+    @Override
+    public List<BatchModel> chechAvailability(int availableUnits, int ofset, int limit) {
+        Query<BatchModel> query = getQuery();
+        query.filter("availableUnits =", availableUnits);
+        query.offset(ofset);
+        query.limit(limit);
+        return query.asList();
+    }
+
+    @Override
+    public List<BatchModel> chechAvailability2(int availableUnits, int ofset, int limit) {
+        Query<BatchModel> query = getQuery();
+        query.filter("availableUnits >", availableUnits);
+        query.offset(ofset);
+        query.limit(limit);
+        return query.asList();
+    }
 }

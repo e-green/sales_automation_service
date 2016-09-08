@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Copyright (c) E-Green. (http://www.egreen.io) All Rights Reserved.
@@ -66,7 +68,17 @@ public class GSNController {
     @ApiOperation(value = "Get All Closed orders by customer ID")
     @GET
     @Path("/getClosedOrdersByCustomerName")
-    public Object getAllClosedOrders(@QueryParam("customerCoder") String customerCode){
+    public Object getAllClosedOrders(@QueryParam("customerCoder") String customerCode) {
         return gsnService.getAllCustomerClosedOrder(customerCode);
+    }
+
+    @GET
+    @Path("/salesbydate")
+    @ApiOperation(
+            value = "sales by date",
+            notes = "Get Sales by date "
+    )
+    public Object salesByDate(@QueryParam("finishTime") String finishTime, @QueryParam("offset") int offset, @QueryParam("limit") int limit) {
+        return gsnService.getSalesByDate(finishTime, offset, limit);
     }
 }
