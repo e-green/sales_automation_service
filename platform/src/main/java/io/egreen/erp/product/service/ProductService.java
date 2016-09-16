@@ -13,45 +13,25 @@ import java.util.List;
 /**
  * Created by dewmal on 8/24/16.
  */
-@Singleton
 public class ProductService {
 
     @Inject
     private ProductDAOController productDAOController;
 
-
-    /**
-     * Get Product From Product Code
-     *
-     * @param code
-     * @return
-     */
     public Product get(String code) {
         return productDAOController.get(code);
     }
 
 
-    /**
-     * Save Product service
-     *
-     * @param product
-     * @return
-     */
-    public Object save(Product product) {
-        if (productDAOController.get(product.getCode()) == null) {
-            return productDAOController.create(product);
-        }
-        return new ReseponseMessage(ReseponseMessage.Type.ERROR, "Try to save Exsisting Item");
+    public List<Product> getAll(int offset, int limit) {
+        return productDAOController.getAllPruduct(offset, limit);
     }
 
-    /**
-     * Get list of products by offsets and limit
-     *
-     * @param offset
-     * @param limit
-     * @return
-     */
-    public List<Product> getAll(int offset, int limit) {
-        return productDAOController.getAll(offset, limit);
+    public boolean save(Product product) {
+        if (product != null) {
+            productDAOController.create(product);
+            return true;
+        }
+        return false;
     }
 }

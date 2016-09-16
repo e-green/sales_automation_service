@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ProductDAOController extends DAOController<Product> {
 
+    List<Product> getAllPruduct(int offset, int limit);
 }

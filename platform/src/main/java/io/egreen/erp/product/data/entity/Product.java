@@ -1,22 +1,29 @@
 package io.egreen.erp.product.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
+
+import java.util.Date;
 
 /**
  * Created by dewmal on 8/24/16.
  */
 @Entity("product")
-@Indexes(
-        @Index(value = "name", fields = @Field("name"))
-)
 public class Product {
 
     @Id
+    @JsonIgnore
     private ObjectId id;
-    private String name;
-    private String code;
-    private String category;
+    private String itemNo;
+    private String serialNo;
+    private double buyingPrice;
+    private Date buyingDate;
+    private Date registerDate;
+
+    public Product() {
+
+    }
 
     public ObjectId getId() {
         return id;
@@ -26,27 +33,43 @@ public class Product {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getItemNo() {
+        return itemNo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemNo(String itemNo) {
+        this.itemNo = itemNo;
     }
 
-    public String getCode() {
-        return code;
+    public String getSerialNo() {
+        return serialNo;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
-    public String getCategory() {
-        return category;
+    public double getBuyingPrice() {
+        return buyingPrice;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setBuyingPrice(double buyingPrice) {
+        this.buyingPrice = buyingPrice;
+    }
+
+    public Date getBuyingDate() {
+        return buyingDate;
+    }
+
+    public void setBuyingDate(Date buyingDate) {
+        this.buyingDate = buyingDate;
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 }

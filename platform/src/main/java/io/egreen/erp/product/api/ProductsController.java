@@ -18,6 +18,8 @@ import java.util.List;
         description = "controller for Item Products can be manage any sale good"
 )
 @Path("/product")
+@Produces("application/json")
+@Consumes("application/json")
 public class ProductsController {
 
 
@@ -44,29 +46,24 @@ public class ProductsController {
     }
 
 
-    @ApiOperation(value = "Get All Product Details",
-            notes = "Get By limit and offset",
-            response = Product.class,
-            responseReference = "Return product by code",
-            responseContainer = "Single")
+    @ApiOperation(
+            value = "get all products",
+            notes = "get All Product from Database"
+    )
     @GET
-    @Path("/getAll/{offset}/{limit}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getAll(@PathParam("offset") int offset, @PathParam("limit") int limit) {
+    @Path("/getAll")
+    public List<Product> getAll(@QueryParam("offset") int offset, @QueryParam("limit") int limit) {
         return productService.getAll(offset, limit);
     }
 
 
-    @ApiOperation(value = "Save Product Details",
-            notes = "Save All Product details unique key is code",
-            response = Product.class,
-            responseReference = "Return product system generated code",
-            responseContainer = "Single")
+    @ApiOperation(
+            value = "Save Product Details",
+            notes = "Save All Product details unique key is code"
+    )
     @Path("/save")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Object save(Product product) {
+    public boolean save(Product product) {
         return productService.save(product);
     }
 

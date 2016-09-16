@@ -18,4 +18,11 @@ public class ProductDAOControllerImpl extends AbstractDAOController<Product> imp
     }
 
 
+    @Override
+    public List<Product> getAllPruduct(int offset, int limit) {
+        Query<Product> query = getQuery();
+        query.offset(offset);
+        query.limit(limit);
+        return query.asList();
+    }
 }
